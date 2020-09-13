@@ -26,6 +26,8 @@ const schedule = require("./routes/api/schedule");
 app.use("/api/schedule", schedule);
 
 // Handle production
+// this was written for deploying on heroku, for deploying on glitch.me you need to remove the if-statement!
+
 if (process.env.NODE_ENV === "production") {
   // set the static folder to server/public
   app.use(express.static(__dirname + "/public/"));
@@ -33,7 +35,7 @@ if (process.env.NODE_ENV === "production") {
   // Handle SPA
   // normally the browser would look for a file with the name of the route, so we redirect every route to index.html
   // the actual routes have to be set above this!
-  app.get(/.*/, (req, (res) => res.sendFile(__dirname + "/public/index.html")));
+  app.get(/.*/, (req, res) => res.sendFile(__dirname + "/public/index.html"));
 }
 
 // Setup server
