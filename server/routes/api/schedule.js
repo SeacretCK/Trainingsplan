@@ -18,6 +18,7 @@ router.get("/", async (req, res) => {
 
 // Add exercise
 router.post("/", async (req, res) => {
+  console.log(req.body);
   const exercise = new Exercise({
     name: req.body.name,
     adjustments: req.body.adjustments,
@@ -66,13 +67,19 @@ router.post("/:exerciseId", async (req, res) => {
     weight_2: req.body.weight_2,
     repetitions_3: req.body.repetitions_3,
     weight_3: req.body.weight_3,
-    comment: req.body.comment
+    comment: req.body.comment,
+    date: req.body.date
   });
+  const name = req.body.name;
+  const adjustments = req.body.adjustments;
 
   try {
     const updatedExercise = await Exercise.updateOne(
       { _id: req.params.exerciseId },
-      { $push: { progress: update } }
+      {
+        $push: { progress: update },
+        $set: { name: name, adjustments: adjustments }
+      }
     );
     res.send(updatedExercise);
   } catch (err) {
