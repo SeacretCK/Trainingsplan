@@ -12,13 +12,13 @@ router.get("/", async (req, res) => {
     res.send(exercises);
   } catch (err) {
     console.error(err);
-    res.send({ message: err });
+    res.send(err.message);
   }
 });
 
 // Add exercise
 router.post("/", async (req, res) => {
-  console.log(req.body);
+  console.log("add exercise req.body: ", req.body);
   const exercise = new Exercise({
     name: req.body.name,
     adjustments: req.body.adjustments,
@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
     res.send(savedExercise);
   } catch (err) {
     console.error(err);
-    res.send({ message: err });
+    res.status(400).send(err);
   }
 });
 
@@ -41,20 +41,20 @@ router.get("/:exerciseId", async (req, res) => {
     res.send(exercise);
   } catch (err) {
     console.error(err);
-    res.send({ message: err });
+    res.status(400).send(err);
   }
 });
 
 // Delete exercise
 router.delete("/:exerciseId", async (req, res) => {
   try {
-    const removedExercise = await Exercise.remove({
+    const removedExercise = await Exercise.deleteOne({
       _id: req.params.exerciseId
     });
     res.send(removedExercise);
   } catch (err) {
     console.error(err);
-    res.send({ message: err });
+    res.status(400).send(err);
   }
 });
 
@@ -70,21 +70,36 @@ router.post("/:exerciseId", async (req, res) => {
     comment: req.body.comment,
     date: req.body.date
   });
+
+  // the cast error when sending letters to the type: number fields repetitions and weight did not show
+  // the respective field was just skipped and not saved
+  // this is the only way I found to get the cast error
+  // validationSync() executes registered validation rules (skipping asynchronous validators) for this document
+  // returns ValidationError if there are errors during validation, or undefined if there is no error
+  const err = update.validateSync();
+  //console.log("validation errors: ", err.message);
+  if (err) {
+    err.customMessage = "Bitte nur Zahlen eingeben";
+    return res.status(400).send(err);
+  }
+
+  console.log("const update: ", update);
   const name = req.body.name;
   const adjustments = req.body.adjustments;
 
   try {
-    const updatedExercise = await Exercise.updateOne(
-      { _id: req.params.exerciseId },
+    const updatedExercise = await Exercise.findByIdAndUpdate(
+      req.params.exerciseId,
       {
         $push: { progress: update },
         $set: { name: name, adjustments: adjustments }
-      }
+      },
+      { runValidators: true } // on update validation is off by default!
     );
     res.send(updatedExercise);
   } catch (err) {
     console.error(err);
-    res.send({ message: err });
+    res.status(400).send(err);
   }
 });
 

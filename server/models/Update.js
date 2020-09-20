@@ -2,28 +2,22 @@ const mongoose = require("mongoose");
 
 const UpdateSchema = mongoose.Schema({
   repetitions_1: {
-    type: Number,
-    required: true
+    type: Number
   },
   weight_1: {
-    type: String,
-    required: true
+    type: Number
   },
   repetitions_2: {
-    type: Number,
-    required: true
+    type: Number
   },
   weight_2: {
-    type: String,
-    required: true
+    type: Number
   },
   repetitions_3: {
-    type: Number,
-    required: true
+    type: Number
   },
   weight_3: {
-    type: String,
-    required: true
+    type: Number
   },
   comment: {
     type: String
