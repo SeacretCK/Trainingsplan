@@ -209,9 +209,10 @@ div.details-btn a {
   color: white;
 }
 
-@media (min-width: 800px) {
+@media (min-width: 650px) {
   div.fab-right {
-    margin: 0 10%;
+    right: 50%;
+    transform: translateX(300px);
   }
 }
 </style>

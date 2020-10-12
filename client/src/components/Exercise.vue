@@ -267,6 +267,7 @@ div.container {
   top: 0;
   left: 0;
   width: 100vw;
+  max-width: unset;
   height: 100vh;
   background: white;
   padding: 20px;
@@ -358,10 +359,15 @@ div.fab-left {
   left: 23px;
 }
 
-@media (min-width: 800px) {
-  div.fab-right,
+@media (min-width: 650px) {
+  div.fab-right {
+    right: 50%;
+    transform: translateX(300px);
+  }
   div.fab-left {
-    margin: 0 10%;
+    left: 50%;
+    right: unset;
+    transform: translateX(-300px);
   }
 }
 

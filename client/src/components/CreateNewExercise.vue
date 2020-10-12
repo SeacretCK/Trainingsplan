@@ -148,10 +148,15 @@ div.fab-left {
   opacity: 0;
 }
 
-@media (min-width: 800px) {
-  div.fab-left,
+@media (min-width: 650px) {
   div.fab-right {
-    margin: 0 10%;
+    right: 50%;
+    transform: translateX(300px);
+  }
+  div.fab-left {
+    left: 50%;
+    right: unset;
+    transform: translateX(-300px);
   }
 }
 </style>
