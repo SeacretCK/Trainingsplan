@@ -355,7 +355,14 @@ textarea.materialize-textarea {
 
 div.fab-left {
   right: auto;
-  margin-left: 3px;
+  left: 23px;
+}
+
+@media (min-width: 800px) {
+  div.fab-right,
+  div.fab-left {
+    margin: 0 10%;
+  }
 }
 
 /* TRANSITION */
